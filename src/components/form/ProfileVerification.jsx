@@ -23,7 +23,7 @@ const ProfileVerification = ({ gender, handleClose }) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
-
+  const paymentOption = ["MasterCard", "Paytem", "PhonePay", "GooglePay"];
   const handleSubmit = async () => {
     try {
       const res = await axios.post(`${baseURL}/profile/create`, form);
@@ -49,9 +49,19 @@ const ProfileVerification = ({ gender, handleClose }) => {
             name={"freeAmount"}
             label="Pay Amount"
             placeholder="Enter amount"
-            value={form.freeAmount}
+            value={form.freeAmount || `$${10}.00`}
             handleChange={handleChange}
           />
+          <p>We Accept</p>
+          <div className="flex gap-2">
+            {paymentOption?.map((item) => {
+              return (
+                <p className="mt-2 px-4 py-2 bg-slate-200 text-xs rounded-full cursor-pointer">
+                  {item}
+                </p>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <div className="py-5">
