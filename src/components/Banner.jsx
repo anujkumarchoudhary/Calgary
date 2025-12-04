@@ -9,7 +9,7 @@ const Banner = () => {
         <img src={img} className="w-full h-[700px] " alt="" />
       </div>
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="absolute text-white top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 - p-10 w-160 h-fit">
+      <div className="absolute text-white top-1/2 left-1/4 transform -translate-x-1/2 -translate-y-1/2 - p-10 w-160 h-fit leading-8">
         <h3 className="text-5xl font-bold ">
           New Places, Unforgettable Dating.
         </h3>

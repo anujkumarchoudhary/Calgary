@@ -40,7 +40,7 @@ const ProfileVerification = ({ gender, handleClose }) => {
   return (
     <FormLayout className={"w-120"} handleClose={handleClose}>
       <p className="text-4xl font-bold">
-        {gender ? "Checkout" : "Profile Varification"}
+        {gender === "Male" ? "Checkout" : "Profile Varification"}
       </p>
 
       {gender === "Male" ? (

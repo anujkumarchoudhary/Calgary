@@ -16,16 +16,18 @@ const Header = () => {
     navigate("/login");
   };
   return (
-    <div className="flex w-full justify-between px-8 py-4">
-      <h2 className="text-4xl font-bold text-[#ED147D]">
-        Cal<span className="text-black">gary Meet</span>
-      </h2>
-      <div className="flex gap-4">
-        {token ? (
-          <CommonButton name={"Logout"} handleClick={handleClick} />
-        ) : (
-          <CommonButton name={"Login"} handleClick={() => setOpen(!open)} />
-        )}
+    <>
+      <div className="flex w-full justify-between px-8 py-4">
+        <h2 className="text-4xl font-bold text-[#ED147D]">
+          Cal<span className="text-black">gary Meet</span>
+        </h2>
+        <div className="flex gap-4">
+          {token ? (
+            <CommonButton name={"Logout"} handleClick={handleClick} />
+          ) : (
+            <CommonButton name={"Login"} handleClick={() => setOpen(!open)} />
+          )}
+        </div>
       </div>
       {open && (
         <UserForm
@@ -40,7 +42,7 @@ const Header = () => {
           handleClose={() => setOpenFProfile(false)}
         />
       )}
-    </div>
+    </>
   );
 };
 
