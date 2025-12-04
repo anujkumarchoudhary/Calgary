@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonButton from "./CommonButton";
 import UserForm from "./form/UserForm";
-import FemelProfileSetting from "./form/FemelProfileSetting";
+import ProfileVerification from "./form/ProfileVerification";
 
 const Header = () => {
   const token = localStorage.getItem("token");
@@ -15,9 +15,8 @@ const Header = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-  console.log(gender, "gender>>>>>>>>>>>>>");
   return (
-    <div className="flex justify-between px-8 py-4">
+    <div className="flex w-full justify-between px-8 py-4">
       <h2 className="text-4xl font-bold text-[#ED147D]">
         Cal<span className="text-black">gary Meet</span>
       </h2>
@@ -36,7 +35,10 @@ const Header = () => {
         />
       )}
       {openFProfile && (
-        <FemelProfileSetting gender={gender} handleClose={() => setOpenFProfile(false)} />
+        <ProfileVerification
+          gender={gender}
+          handleClose={() => setOpenFProfile(false)}
+        />
       )}
     </div>
   );

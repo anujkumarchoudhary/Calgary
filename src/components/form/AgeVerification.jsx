@@ -6,7 +6,7 @@ const AgeVerification = ({ handleClickYes, handleClickNo }) => {
   return (
     <FormLayout>
       <h2 className="text-4xl font-bold">Age Verification</h2>
-      <p className="py-4">You must be 18 years old to enter.</p>
+      <p className="py-4">You must be 25 years old to enter.</p>
       <div className="flex justify-center gap-5">
         <CommonButton name="Yes" handleClick={handleClickYes} />
         <CommonButton

@@ -7,9 +7,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import FormLayout from "./FormLayout";
 import SelectField from "../SelectField";
-import FemelProfileSetting from "./FemelProfileSetting";
 
-const UserForm = ({ refresh, handleClose, handleOpenProfile,passGenderTOParant }) => {
+const UserForm = ({
+  refresh,
+  handleClose,
+  handleOpenProfile,
+  passGenderTOParant,
+}) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const token = localStorage.getItem("token");
@@ -25,19 +29,29 @@ const UserForm = ({ refresh, handleClose, handleOpenProfile,passGenderTOParant }
     const { name, value } = e.target;
     setInputVal({ ...inputVal, [name]: value });
   };
-  const handleClick = async () => {
+  const handleRegister = async () => {
     try {
-      const res = await axios.post(
-        `${baseURL}/users/${isAcount ? "create" : "login"}`,
-        inputVal
-      );
+      const res = await axios.post(`${baseURL}/users/create`, inputVal);
       if (res?.status == 201 || 200) {
         toast.success(res?.data?.message);
-        const { gender } = res?.data?.newUser;
-        passGenderTOParant(gender)
-        console.log(res?.data?.newUser, "res?.data?.message");
-        localStorage.setItem("token", res?.data?.token);
         handleOpenProfile();
+        handleClose();
+        const { gender } = res?.data?.newUser;
+        passGenderTOParant(gender);
+      }
+    } catch (err) {
+      if (err?.status == 401) {
+        toast.error(err?.response?.data?.message);
+      }
+      console.log(err);
+    }
+  };
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(`${baseURL}/users/login`, inputVal);
+      if (res?.status == 201 || 200) {
+        toast.success(res?.data?.message);
+        localStorage.setItem("token", res?.data?.token);
         handleClose();
         navigate("/");
       }
@@ -49,52 +63,55 @@ const UserForm = ({ refresh, handleClose, handleOpenProfile,passGenderTOParant }
     }
   };
   return (
-    <div>
-      <FormLayout handleClose={handleClose} className={"w-110"}>
+    <div className="bg-yellow-200">
+      <FormLayout handleClose={handleClose} className={"w-110 bg-gray-900"}>
         <p className="text-4xl font-bold text-center">
           {isAcount ? "Register" : "Login"}
         </p>
 
-        {isAcount && (
+        <div className="py-">
+          {isAcount && (
+            <InputField
+              label="Name"
+              name="name"
+              value={inputVal?.name}
+              handleChange={handleChange}
+              placeholder="Please enter name"
+            />
+          )}
           <InputField
-            label="Name"
-            name="name"
-            value={inputVal?.name}
+            label="Email"
+            name="email"
+            value={inputVal?.email}
             handleChange={handleChange}
-            placeholder="Please enter name"
+            placeholder="Please enter email"
           />
-        )}
-
-        <InputField
-          label="Email"
-          name="email"
-          value={inputVal?.email}
-          handleChange={handleChange}
-          placeholder="Please enter email"
-        />
-        {isAcount && (
-          <SelectField
-            label={"Gender"}
-            name={"gender"}
-            value={inputVal.gender}
+          {isAcount && (
+            <SelectField
+              label={"Gender"}
+              name={"gender"}
+              value={inputVal.gender}
+              handleChange={handleChange}
+              options={["Male", "Femel"]}
+            />
+          )}
+          <InputField
+            label="Password"
+            name="password"
+            value={inputVal?.password}
             handleChange={handleChange}
-            options={["Male", "Femel"]}
+            placeholder="Please enter password"
           />
-        )}
-
-        <InputField
-          label="Password"
-          name="password"
-          value={inputVal?.password}
-          handleChange={handleChange}
-          placeholder="Please enter password"
-        />
+        </div>
 
         <CommonButton
           name={isAcount ? "Register" : "Login"}
-          handleClick={handleClick}
+          handleClick={isAcount ? handleRegister : handleLogin}
         />
-        <p onClick={() => setIsAcount(!isAcount)}>
+        <p
+          onClick={() => setIsAcount(!isAcount)}
+          className="pt-1 cursor-pointer"
+        >
           {isAcount
             ? "Do you have account, login"
             : "if not have account, register"}

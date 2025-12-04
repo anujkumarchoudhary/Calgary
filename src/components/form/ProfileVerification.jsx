@@ -6,7 +6,7 @@ import axios from "axios";
 import { baseURL } from "../../../baseurl";
 import { toast } from "react-toastify";
 
-const FemelProfileSetting = ({ gender, handleClose }) => {
+const ProfileVerification = ({ gender, handleClose }) => {
   const [form, setForm] = useState({
     drivingLicense: "",
     dl: "",
@@ -27,10 +27,10 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
   const handleSubmit = async () => {
     try {
       const res = await axios.post(`${baseURL}/profile/create`, form);
-      console.log(res,"res>LM<DAe")
+      console.log(res, "res>LM<DAe");
       if (res?.status == 201 || 200) {
         toast.success(res?.data?.message);
-        handleClose()
+        handleClose();
       }
     } catch (err) {
       console.log(err);
@@ -39,10 +39,12 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
 
   return (
     <FormLayout className={"w-120"} handleClose={handleClose}>
-      <p className="text-4xl font-bold">Profile Setting</p>
+      <p className="text-4xl font-bold">
+        {gender ? "Checkout" : "Profile Varification"}
+      </p>
 
       {gender === "Male" ? (
-        <div>
+        <div className="py-5">
           <InputField
             name={"freeAmount"}
             label="Pay Amount"
@@ -50,12 +52,9 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
             value={form.freeAmount}
             handleChange={handleChange}
           />
-          {errors.freeAmount && (
-            <p className="text-red-500 text-sm">{errors.freeAmount}</p>
-          )}
         </div>
       ) : (
-        <div>
+        <div className="py-5">
           <InputField
             name={"dl"}
             label="Driving License"
@@ -63,9 +62,6 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
             value={form.dl}
             handleChange={handleChange}
           />
-          {errors.drivingLicense && (
-            <p className="text-red-500 text-sm">{errors.drivingLicense}</p>
-          )}
 
           <InputField
             name={"bc"}
@@ -74,9 +70,6 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
             value={form.bc}
             handleChange={handleChange}
           />
-          {errors.birthCertificate && (
-            <p className="text-red-500 text-sm">{errors.birthCertificate}</p>
-          )}
         </div>
       )}
 
@@ -85,4 +78,4 @@ const FemelProfileSetting = ({ gender, handleClose }) => {
   );
 };
 
-export default FemelProfileSetting;
+export default ProfileVerification;
