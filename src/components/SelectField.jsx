@@ -13,11 +13,10 @@ const SelectField = ({ label, name, value, handleChange, options = [] }) => {
       >
         <option value="">Select {label}</option>
         {options.map((opt, index) => (
-          <option key={index} value={opt._id}>
-            {opt.name}
+          <option key={index} value={opt._id || opt}>
+            {opt.name || opt}
           </option>
         ))}
-        <option value="add_new">Add New {label}</option>
       </select>
     </div>
   );

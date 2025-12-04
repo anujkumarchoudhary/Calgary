@@ -5,15 +5,20 @@ import axios from "axios";
 import { baseURL } from "../../../baseurl";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import FormLayout from "./FormLayout";
+import SelectField from "../SelectField";
+import FemelProfileSetting from "./FemelProfileSetting";
 
-const UserForm = ({ refresh, handleClose }) => {
+const UserForm = ({ refresh, handleClose, handleOpenProfile,passGenderTOParant }) => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const token = localStorage.getItem("token");
-
+  const [isAcount, setIsAcount] = useState(false);
   const [inputVal, setInputVal] = useState({
     name: "",
     phone: "",
     email: "admin@gmail.com",
+    gender: "",
     password: "admin@123",
   });
   const handleChange = (e) => {
@@ -22,10 +27,17 @@ const UserForm = ({ refresh, handleClose }) => {
   };
   const handleClick = async () => {
     try {
-      const res = await axios.post(`${baseURL}/user/login`, inputVal);
+      const res = await axios.post(
+        `${baseURL}/users/${isAcount ? "create" : "login"}`,
+        inputVal
+      );
       if (res?.status == 201 || 200) {
         toast.success(res?.data?.message);
+        const { gender } = res?.data?.newUser;
+        passGenderTOParant(gender)
+        console.log(res?.data?.newUser, "res?.data?.message");
         localStorage.setItem("token", res?.data?.token);
+        handleOpenProfile();
         handleClose();
         navigate("/");
       }
@@ -37,11 +49,13 @@ const UserForm = ({ refresh, handleClose }) => {
     }
   };
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="bg-slate-50 p-6 w-96 h-fit border shadow-lg rounded-md">
-        <p className="text-lg font-bold text-center">Login</p>
+    <div>
+      <FormLayout handleClose={handleClose} className={"w-110"}>
+        <p className="text-4xl font-bold text-center">
+          {isAcount ? "Register" : "Login"}
+        </p>
 
-        {token && (
+        {isAcount && (
           <InputField
             label="Name"
             name="name"
@@ -58,6 +72,15 @@ const UserForm = ({ refresh, handleClose }) => {
           handleChange={handleChange}
           placeholder="Please enter email"
         />
+        {isAcount && (
+          <SelectField
+            label={"Gender"}
+            name={"gender"}
+            value={inputVal.gender}
+            handleChange={handleChange}
+            options={["Male", "Femel"]}
+          />
+        )}
 
         <InputField
           label="Password"
@@ -68,10 +91,15 @@ const UserForm = ({ refresh, handleClose }) => {
         />
 
         <CommonButton
-          name={!token ? "Login" : "Register"}
+          name={isAcount ? "Register" : "Login"}
           handleClick={handleClick}
         />
-      </div>
+        <p onClick={() => setIsAcount(!isAcount)}>
+          {isAcount
+            ? "Do you have account, login"
+            : "if not have account, register"}
+        </p>
+      </FormLayout>
     </div>
   );
 };

@@ -2,12 +2,7 @@ import React from "react";
 import CommonButton from "../CommonButton";
 import FormLayout from "./FormLayout";
 
-const AgeVerification = ({ handleClickNo,handleClose }) => {
-  const handleClickYes = () => {
-    localStorage.setItem("ageVerified", true);
-    handleClose()
-  };
-
+const AgeVerification = ({ handleClickYes, handleClickNo }) => {
   return (
     <FormLayout>
       <h2 className="text-4xl font-bold">Age Verification</h2>
